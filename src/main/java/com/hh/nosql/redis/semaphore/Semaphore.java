@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
+ * 技术信号量和公平信号量
  * @author HaoHao
  * @date 2018/10/9下午2:28
  */
