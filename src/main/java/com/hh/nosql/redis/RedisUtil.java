@@ -8,6 +8,8 @@ import redis.clients.jedis.ZParams;
 import redis.clients.jedis.exceptions.JedisDataException;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author HaoHao
@@ -45,6 +47,8 @@ public class RedisUtil {
     public static void remove(String key) {
         jedis.del(key);
     }
+
+    //***************************** String start *********************************************8
 
     /**
      * String 自增1
@@ -90,6 +94,102 @@ public class RedisUtil {
     public static void watch() {
 //        jedis.watch()
     }
+
+    @Test
+    public void getRange() {
+        // 获取字符串的指定范围
+        String v = jedis.getrange("k1", 0, 1);
+        jedis.setrange("k1", 0, "000");
+    }
+
+    @Test
+    public void setRange() {
+        // 从offset 开始替换
+        // 返回被修改后的字符串长度
+        Long k1 = jedis.setrange("k1", 1, "2222");
+
+        System.out.println(k1);
+    }
+
+    //***************************** String end *********************************************8
+
+
+    //***************************** List start *********************************************8
+    @Test
+    public void lPush() {
+        // 头部插入
+        // 返回当前list size
+        Long v = jedis.lpush("LKey", "v1", "v2");
+        System.out.println(v);
+    }
+
+    @Test
+    public void rPush() {
+        // 返回当前list size
+        Long v = jedis.rpush("LKey", "v3");
+        System.out.println(v);
+    }
+
+    @Test
+    public void lRange() {
+        // 返回指定范围的列表
+        List<String> list = jedis.lrange("LKey", 1, 2);
+        System.out.println(list);
+    }
+
+    @Test
+    public void lDelete() {
+        String headV = jedis.lpop("LKey");
+        String lastV = jedis.rpop("LKey");
+    }
+
+    //***************************** List end *********************************************8
+
+    //***************************** Set Start *********************************************8
+    @Test
+    public void sAdd() {
+        // 返回成功添加的个数
+        Long size = jedis.sadd("SKey", "v2", "v3");
+        System.out.println(size);
+    }
+
+    @Test
+    public void sUnion() {
+        // 并集
+        Set<String> sunion = jedis.sunion("SKey", "Skey");
+    }
+
+    @Test
+    public void sInter() {
+        // 交集
+        jedis.sinterstore("SKey", "Skey", "SKey2");
+    }
+
+    //***************************** Set end *********************************************8
+
+    //***************************** Hash Start *********************************************8
+    @Test
+    public void hSet() {
+        jedis.hset("user", "name", "Jack");
+        jedis.hset("user", "age", "18");
+        Map<String, String> user = jedis.hgetAll("user");
+    }
+
+
+    //***************************** Hash end *********************************************8
+
+
+    //***************************** zset start *********************************************8
+    @Test
+    public void zSet() {
+        jedis.zadd("zk", 1.0, "v1");
+        jedis.zadd("zk", 1.2, "v2");
+        jedis.zadd("zk", 1.1, "v3");
+    }
+
+
+    //***************************** zset end *********************************************8
+
 
     @Test
     public void zInterStore() {
