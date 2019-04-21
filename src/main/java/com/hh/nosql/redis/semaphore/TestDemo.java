@@ -16,11 +16,12 @@ public class TestDemo {
 
     private static final String KEY_STRING = "key_string";
 
+    // 一个商户+一个接口 对应一个zset 商户维度限流
     private static void testSemaphore() throws Exception {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             Jedis jedis = RedisUtil.getJedis();
             Semaphore.acquireSemaphore(jedis, KEY_TIMEOUT);
-            Thread.sleep(5);
+            Thread.sleep(100);
             jedis.close();
         }
     }

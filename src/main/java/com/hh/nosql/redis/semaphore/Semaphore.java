@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * 技术信号量和公平信号量
+ * 计数信号量和公平信号量
  * @author HaoHao
  * @date 2018/10/9下午2:28
  */
@@ -19,7 +19,7 @@ public class Semaphore {
     // 频次限制
     private static final int LIMIT = 5;
 
-    private static final int TIME_OUT = 500;
+    private static final int TIME_OUT = 1000;
 
     /**
      * 计数信号量
@@ -69,8 +69,8 @@ public class Semaphore {
         jedis.zremrangeByScore(key_timeout, 0, now - TIME_OUT);
 
         // 超时序列和自增序列取交集
-
         ZParams zParams = new ZParams();
+        // 设置分数的比重 只取自增序列的分数
         zParams.weightsByDouble(1, 0);
         jedis.zinterstore(key_count, zParams,key_count, key_timeout);
 

@@ -186,7 +186,20 @@ public class RedisUtil {
         jedis.zadd("zk", 1.2, "v2");
         jedis.zadd("zk", 1.1, "v3");
     }
+    @Test
+    public void zSet2() {
+        jedis.zadd("zk1", 1.0, "v1");
+        jedis.zadd("zk1", 1.2, "v2");
+    }
 
+    @Test
+    public void inter(){
+        ZParams zParams = new ZParams();
+        // 设置取交集是 score 的比重
+        zParams.weightsByDouble(0, 1);
+        jedis.zinterstore("zk1", zParams,"zk", "zk1");
+
+    }
 
     //***************************** zset end *********************************************8
 
